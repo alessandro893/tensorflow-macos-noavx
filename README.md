@@ -1,6 +1,5 @@
 # Tensorflow OSX Build Tutorial (v2.0.0)
 
-By `Tom Heaven` @ 2019.10.01
 
 Project page: [https://github.com/TomHeaven/tensorflow-osx-build](https://github.com/TomHeaven/tensorflow-osx-build)
 
@@ -44,8 +43,8 @@ Please specify the location of python. [Default is /usr/bin/python]: /opt/local/
 
 
 Found possible Python library paths:
-  /usr/local/Cellar/python/3.6.0/Frameworks/Python.framework/Versions/3.7/lib/python3.6/site-packages
-Please input the desired Python library path to use.  Default is [/usr/local/Cellar/python/3.6.0/Frameworks/Python.framework/Versions/3.7/lib/python3.6/site-packages]
+  /opt/local/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages
+Please input the desired Python library path to use.  Default is [/opt/local/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages]
 
 Do you wish to build TensorFlow with XLA JIT support? [Y/n]: n
 No XLA JIT support will be enabled for TensorFlow.

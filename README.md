@@ -115,7 +115,6 @@ Configuration finished
 ```
 bazel build --config=opt --config=nonccl //tensorflow/tools/pip_package:build_pip_package
 ```
-Note `NCCL` only works on Linux now, which does not work on Mac OS X or Windows. We need to disable it by passing `--config=nonccl`, or you will meet NCCL related errors.
 
 
 ## Important step
@@ -140,6 +139,7 @@ Solution: Edit `bazel-tensorflow/external/com_google_absl/absl/container/interna
   }*/
 
 ```
+
 Then, build again using the same previous commands. This time, the building process should be successful.
 
 + generate a wheel package

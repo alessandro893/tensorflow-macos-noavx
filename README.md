@@ -109,6 +109,7 @@ Preconfigured Bazel build configs to DISABLE default on features:
 	--config=nonccl      	# Disable NVIDIA NCCL support.
 Configuration finished
 ```
+
 + start building
 
 ```
@@ -116,6 +117,8 @@ bazel build --config=opt --config=nonccl //tensorflow/tools/pip_package:build_pi
 ```
 Note `NCCL` only works on Linux now, which does not work on Mac OS X or Windows. We need to disable it by passing `--config=nonccl`, or you will meet NCCL related errors.
 
+
+## Important step
 + fix a source error in external sources. Previous building process will end with an error:
  
 ```
@@ -145,16 +148,5 @@ Then, build again using the same previous commands. This time, the building proc
 bazel-bin/tensorflow/tools/pip_package/build_pip_package ./
 ```
 
-## For Python 2.7
-
-For Python 2.7, we need an additional patch for external source file. Edit file `bazel-tensorflow/external/cython/Cython/Compiler/Nodes.py` and add the following lines at top:
-
-```python
-import sys
-if sys.version < '3':
-    reload(sys)
-    sys.setdefaultencoding('utf-8')
-```
-Note external source patch can be applied only after the first build failure because external sources are downloaded at the beginning of the building process.
 
 

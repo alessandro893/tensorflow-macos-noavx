@@ -1,7 +1,7 @@
 # Tensorflow OSX Build Tutorial (v2.0.0)
 
 
-Project page: [https://github.com/TomHeaven/tensorflow-osx-build](https://github.com/TomHeaven/tensorflow-osx-build)
+Forked from: [https://github.com/TomHeaven/tensorflow-osx-build](https://github.com/TomHeaven/tensorflow-osx-build)
 
 ---
 

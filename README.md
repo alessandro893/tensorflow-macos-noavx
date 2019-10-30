@@ -1,92 +1,160 @@
-# Tensorflow OSX Build
+# Tensorflow OSX Build Tutorial (v2.0.0)
 
-Unfortunately, the Tensorflow team stops releasing binary package for Mac OS with CUDA support since Tensorflow 1.2. This project provides off-the-shelf binary packages. ``Both Python 2.7 and 3.7 are supported now!``
+By `Tom Heaven` @ 2019.10.01
 
-很不幸，Tensorflow团队自从1.2版本开始停止了发布 Mac OS CUDA版。本项目提供 Mac OS 上编译好、可直接安装的Tensorflow CUDA版本。``本项目同时支持Python 2.7 和 3.7 了！``
+Project page: [https://github.com/TomHeaven/tensorflow-osx-build](https://github.com/TomHeaven/tensorflow-osx-build)
 
-# Attenion
-+ 【2018.08.25】Tensorflow builds against CUDA 9.2 appear to be unstable. Do not use cu92 builds for your work. 
-+ 【2018.08.25】Tensorflow在CUDA9.2上不稳定，不建议用于工作。
+---
 
+Note patches for every release of Tensorflow is different! So the instructions work for v2.0.0 only.
 
-# Releases
-
-You can find releases in the [releases page](https://github.com/TomHeaven/tensorflow-osx-build/releases).
-
-你可以在[Releases页面](https://github.com/TomHeaven/tensorflow-osx-build/releases)找到以前发布的版本。
+First make sure your XCode 9.4.1, CUDA 10.0 SDK and CUDNN 7.4/7.6 are properly installed, and Internet connection is also required. Install Python3 using `Homebrew` if you need to compile for Python3.
 
 
-# Installation for Python 2.7
+## For Python 3.6 / 3.7
+The following instructions will help you build your own wheel files for Python 3 with CUDA 10.0.
 
-First, ensure your CUDA driver and cudnn is installed properly, and copy dependencies in folder `usr_local_lib` to path `/usr/local/lib`.
++ download Tensorflow sources and switch to `v2.0.0`
 
-首先，确保CUDA驱动和cudnn正确安装,并且将文件夹`usr_local_lib`中的依赖项复制到路径`/usr/local/lib`。
+```shell
+git clone https://github.com/tensorflow/tensorflow
+cd tensorflow
+git checkout v2.0.0
+```
++ download and use source patches in this repo to patch sources:
+
+```shell
+git apply v2.0.0.patch
 
 ```
-sudo mkdir /usr/local
-sudo mkdir /usr/local/lib
-sudo cp usr_local_lib/* /usr/local/lib/
-```
-
-Second, uninstall the previous tensorflow installtion by
-
-其次，卸载之前版本的Tensorflow:
-
-```
-pip uninstall tensorflow
-pip uninstall tensorflow-gpu # for early version with offical support
-```
-
-At last, download binary packages from [Releases](https://github.com/TomHeaven/tensorflow-osx-build/releases) page and install
-
-最后，从[Releases页面](https://github.com/TomHeaven/tensorflow-osx-build/releases)下载并安装：
++ run `./configure`, note that:  
+  - using `/usr/local/bin/python` if you want a build for python3.
+  - select the correct site packages path.
+  - Set correct CUDA compute capability values.
+  - Use `/usr/bin/gcc` as the default compiler.
+  
+Here is an example for Python 3.7:
 
 ```
+iMac18:tensorflow tomheaven$ ./configure
+WARNING: Running Bazel server needs to be killed, because the startup options are different.
+WARNING: --batch mode is deprecated. Please instead explicitly shut down your Bazel server using the command "bazel shutdown".
+You have bazel 0.24.1 installed.
+Please specify the location of python. [Default is /usr/bin/python]: /usr/local/bin/python3
 
-pip install tensorflow*.whl
+
+Found possible Python library paths:
+  /usr/local/Cellar/python/3.6.0/Frameworks/Python.framework/Versions/3.7/lib/python3.6/site-packages
+Please input the desired Python library path to use.  Default is [/usr/local/Cellar/python/3.6.0/Frameworks/Python.framework/Versions/3.7/lib/python3.6/site-packages]
+
+Do you wish to build TensorFlow with XLA JIT support? [Y/n]: n
+No XLA JIT support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with OpenCL SYCL support? [y/N]: 
+No OpenCL SYCL support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with ROCm support? [y/N]: 
+No ROCm support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with CUDA support? [y/N]: y
+CUDA support will be enabled for TensorFlow.
+
+Found CUDA 10.0 in:
+    /usr/local/cuda/lib64
+    /usr/local/cuda/include
+Found cuDNN 7 in:
+    /usr/local/cuda/lib64
+    /usr/local/cuda/include
+
+
+Please specify a list of comma-separated CUDA compute capabilities you want to build with.
+You can find the compute capability of your device at: https://developer.nvidia.com/cuda-gpus.
+Please note that each additional compute capability significantly increases your build time and binary size, and that TensorFlow only supports compute capabilities >= 3.5 [Default is: 3.5,7.0]: 3.0,3.5,5.0,5.2,6.1,7.0
+
+
+WARNING: XLA does not support CUDA compute capabilities lower than 3.5. Disable XLA when running on older GPUs.
+Do you want to use clang as CUDA compiler? [y/N]: 
+nvcc will be used as CUDA compiler.
+
+Please specify which gcc should be used by nvcc as the host compiler. [Default is /usr/local/bin/gcc]: /usr/bin/gcc
+
+
+Do you wish to build TensorFlow with MPI support? [y/N]: 
+No MPI support will be enabled for TensorFlow.
+
+Please specify optimization flags to use during compilation when bazel option "--config=opt" is specified [Default is -march=native -Wno-sign-compare]: 
+
+
+Would you like to interactively configure ./WORKSPACE for Android builds? [y/N]: 
+Not configuring the WORKSPACE for Android builds.
+
+Do you wish to build TensorFlow with iOS support? [y/N]: 
+No iOS support will be enabled for TensorFlow.
+
+Preconfigured Bazel build configs. You can use any of the below by adding "--config=<>" to your build command. See .bazelrc for more details.
+	--config=mkl         	# Build with MKL support.
+	--config=monolithic  	# Config for mostly static monolithic build.
+	--config=gdr         	# Build with GDR support.
+	--config=verbs       	# Build with libverbs support.
+	--config=ngraph      	# Build with Intel nGraph support.
+	--config=numa        	# Build with NUMA support.
+	--config=dynamic_kernels	# (Experimental) Build kernels into separate shared objects.
+	--config=v2          	# Build TensorFlow 2.x instead of 1.x.
+Preconfigured Bazel build configs to DISABLE default on features:
+	--config=noaws       	# Disable AWS S3 filesystem support.
+	--config=nogcp       	# Disable GCP support.
+	--config=nohdfs      	# Disable HDFS support.
+	--config=noignite    	# Disable Apache Ignite support.
+	--config=nokafka     	# Disable Apache Kafka support.
+	--config=nonccl      	# Disable NVIDIA NCCL support.
+Configuration finished
+```
++ start building
+
+```
+bazel build --config=opt --config=nonccl //tensorflow/tools/pip_package:build_pip_package
+```
+Note `NCCL` only works on Linux now, which does not work on Mac OS X or Windows. We need to disable it by passing `--config=nonccl`, or you will meet NCCL related errors.
+
++ fix a source error in external sources. Previous building process will end with an error:
+ 
+```
+external/com_google_absl/absl/container/internal/compressed_tuple.h:170:53: error: use 'template' keyword to treat 'Storage' as a dependent template name
+return (std::move(*this).internal_compressed_tuple::Storage< CompressedTuple, I> ::get()); 
 ```
 
-# Installation for Python 3.7
+Solution: Edit `bazel-tensorflow/external/com_google_absl/absl/container/internal/compressed_tuple.h:168-178` and comment out two problematic functions:
 
-Install Python 3.7 from Homebrew first, and then simply follow the guide for Python 2.7 and replace `pip` command with `pip3` and `python` with `python3`.
+```cpp
 
-首先从Homebrew安装Python 3.7，然后按照Python 2.7的安装步骤执行，注意将`pip`替换为`pip3`，并用`python3`启动`python`。
-
-
-
-Enjoy!
-
-开始使用新版Tensorflow吧!
-
-# Build Tutorial
-If you want to build your own wheel packages, refer to the following tutorials:
-
-+ [v1.10](https://github.com/TomHeaven/tensorflow-osx-build/blob/master/build_tutorial_1.10.md)
-+ [v2.0.0](https://github.com/TomHeaven/tensorflow-osx-build/blob/master/build_tutorial_2.0.0.md) This tutorial also works for v1.15.0, just use source patch v1.15.0 instead of v2.0.0.
-
-# Patch
-There is a NCCL related BUG affecting Release 1.8. If you encounter such an error:
+/*template <int I>
+  ElemT<I>&& get() && {
+    return std::move(*this).internal_compressed_tuple::template Storage<CompressedTuple, I>::get();
+  }
+  template <int I>
+  constexpr const ElemT<I>&& get() const&& {
+    return absl::move(*this).internal_compressed_tuple::template Storage<CompressedTuple, I>::get();
+  }*/
 
 ```
-Symbol not found: _ncclAllReduce
+Then, build again using the same previous commands. This time, the building process should be successful.
+
++ generate a wheel package
+
+```
+bazel-bin/tensorflow/tools/pip_package/build_pip_package ./
 ```
 
-Replace the `_nccl_ops.so` file in your installation directory with the file in `patch` folder. An example installation directory of the file is `/Library/Python/2.7/site-packages/tensorflow/contrib/nccl/python/ops/` for Python 2.7  and `/usr/local/lib/python3.7/site-packages/tensorflow/contrib/nccl/python/ops/` for for Python 3.7.
+## For Python 2.7
+
+For Python 2.7, we need an additional patch for external source file. Edit file `bazel-tensorflow/external/cython/Cython/Compiler/Nodes.py` and add the following lines at top:
+
+```python
+import sys
+if sys.version < '3':
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
+```
+Note external source patch can be applied only after the first build failure because external sources are downloaded at the beginning of the building process.
 
 
-1.8版本有一个NCCL相关的BUG，如果你遇到了此BUG，请用Patch文件夹内的`_nccl_ops.so`替换安装目录下的同名文件。具体路径参考英文表述。
-
-
-# Source Code
-
-Source code from: [https://github.com/tensorflow/tensorflow](https://github.com/tensorflow/tensorflow)
-
-# Related Links
-
-If you need Pytorch builds for osx, go to this page: [https://github.com/TomHeaven/pytorch-osx-build](https://github.com/TomHeaven/pytorch-osx-build)
-
-If you need MxNet builds for osx, go to this page: [https://github.com/TomHeaven/mxnet_osx_build](https://github.com/TomHeaven/mxnet_osx_build)
-
-如果你需要Pytorch包，请看这个页面：[https://github.com/TomHeaven/pytorch-osx-build](https://github.com/TomHeaven/pytorch-osx-build)
-
-如果你需要MxNet包，请看这个页面：[https://github.com/TomHeaven/mxnet_osx_build](https://github.com/TomHeaven/mxnet_osx_build)

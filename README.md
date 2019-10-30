@@ -33,14 +33,14 @@ git apply v2.0.0.patch
   - Set correct CUDA compute capability values.
   - Use `/usr/bin/gcc` as the default compiler.
   
-Here is an example for Python 3.7:
+Here is an example for Python 3.6:
 
 ```
 iMac18:tensorflow tomheaven$ ./configure
 WARNING: Running Bazel server needs to be killed, because the startup options are different.
 WARNING: --batch mode is deprecated. Please instead explicitly shut down your Bazel server using the command "bazel shutdown".
 You have bazel 0.24.1 installed.
-Please specify the location of python. [Default is /usr/bin/python]: /usr/local/bin/python3
+Please specify the location of python. [Default is /usr/bin/python]: /opt/local/bin/python
 
 
 Found possible Python library paths:
@@ -60,10 +60,10 @@ Do you wish to build TensorFlow with CUDA support? [y/N]: y
 CUDA support will be enabled for TensorFlow.
 
 Found CUDA 10.0 in:
-    /usr/local/cuda/lib64
+    /usr/local/cuda/lib
     /usr/local/cuda/include
 Found cuDNN 7 in:
-    /usr/local/cuda/lib64
+    /usr/local/cuda/lib
     /usr/local/cuda/include
 
 

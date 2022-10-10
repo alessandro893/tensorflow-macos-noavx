@@ -1,4 +1,6 @@
-# Tensorflow 2 compiled on MacOS for Mac Pro 5.1 without AVX instruction set.
+# Tensorflow 2 for MacOS without AVX instructions
+Compiled on Mac Pro 5.1.
+
 --------------------
 ![alt text](https://raw.githubusercontent.com/alessandro893/tensorflow-macos-no_avx/master/tf-logo.png)
 

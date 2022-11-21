@@ -1,4 +1,4 @@
-# Tensorflow 2 for MacOS without AVX instructions
+# Tensorflow for MacOS without AVX
 Compiled on Mac Pro 5.1.
 
 -MPS (Metal Performance Shaders) Support

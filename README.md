@@ -9,7 +9,7 @@ Compiled on Mac Pro 5.1
 ![alt text](https://raw.githubusercontent.com/alessandro893/tensorflow-macos-noavx/master/tf-logo.png)
 
 
-Instalation:
+Installation:
 --------------------------
 pip install /path/tensorflow-macosx.whl
 
